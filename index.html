@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pepsi</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #005cbf;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            width: 100px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: red;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            box-shadow: 0 0 5px red;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            box-shadow: 0 0 15px red;
+            transform: scale(1.1);
+        }
+
+        .container {
+            text-align: center;
+            padding: 50px 20px;
+            flex: 1;
+        }
+
+        .title {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+
+        .can {
+            display: inline-block;
+            margin-top: 40px;
+            position: relative;
+            left: 50px;
+        }
+
+        .footer {
+            font-size: 0.8em;
+            color: #d3d3d3;
+            text-align: center;
+            padding: 20px 0;
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="logo.png">
+        <div class="buttons">
+            <a href="#home" class="button">Home</a>
+            <a href="#about" class="button">About</a>
+            <a href="#buy" class="button">Buy</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="title">Be Young, Have Fun, Drink Pepsi</div>
+        <div class="description">
+            Pepsi is a carbonated soft drink manufactured by PepsiCo. Originally created and developed in 1893 by Caleb Bradham and introduced as Brad's Drink, it was renamed as Pepsi-Cola in 1898, and then shortened to Pepsi in 1961.
+        </div>
+        <img src="pepsi.png">
+    </div>
+    <div class="footer">
+        Drinking is better together — we’re looking for Pepsi lovers to join our team. If that’s you, we’d love to talk.
+    </div>
+</body>
+</html>

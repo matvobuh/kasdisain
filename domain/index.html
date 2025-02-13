@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Store</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const domainInput = document.getElementById('domain-input');
+            const checkboxes = document.querySelectorAll('.tld-checkbox');
+            const searchButton = document.getElementById('search-button');
+
+            function updateButtonState() {
+                const selectedTLDs = Array.from(checkboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+
+                searchButton.disabled = !domainInput.value || selectedTLDs.length === 0;
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateButtonState);
+            });
+
+            domainInput.addEventListener('input', updateButtonState);
+
+            searchButton.addEventListener('click', () => {
+                const selectedTLDs = Array.from(checkboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+
+                console.log('Searching for:', domainInput.value, 'with TLDs:', selectedTLDs);
+                alert(`Searching for: ${domainInput.value} with TLDs: ${selectedTLDs.join(', ')}`);
+            });
+        });
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="p-8">
+        <div class="max-w-md mx-auto bg-white rounded-2xl shadow-md p-6">
+            <h1 class="text-xl font-bold mb-4">Domain Search</h1>
+            <input 
+                id="domain-input"
+                type="text" 
+                placeholder="Enter domain name" 
+                class="w-full p-2 border rounded mb-4"
+            />
+            <h2 class="text-lg mb-2">Choose TLDs:</h2>
+            <div class="mb-4">
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" value=".com" class="tld-checkbox mr-2">
+                    <label>.com</label>
+                </div>
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" value=".net" class="tld-checkbox mr-2">
+                    <label>.net</label>
+                </div>
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" value=".org" class="tld-checkbox mr-2">
+                    <label>.org</label>
+                </div>
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" value=".eu" class="tld-checkbox mr-2">
+                    <label>.eu</label>
+                </div>
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" value=".ee" class="tld-checkbox mr-2">
+                    <label>.ee</label>
+                </div>
+            </div>
+            <button 
+                id="search-button"
+                disabled
+                class="w-full bg-blue-500 text-white p-2 rounded disabled:opacity-50"
+            >
+                Search Domain
+            </button>
+        </div>
+    </div>
+</body>
+</html>

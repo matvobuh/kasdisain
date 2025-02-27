@@ -89,6 +89,21 @@
       max-width: 600px;
       margin: 100px auto;
     }
+
+    /* Custom styling for price breakdown box */
+    .price-breakdown {
+      background-color: #90ee90; /* Light green background */
+      color: black; /* Black text for better readability */
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* Increased gap between Kestus slider and Price Breakdown */
+    .slider-container {
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
@@ -172,15 +187,19 @@
           <option value="Australia">Australia</option>
           <option value="Austria">Austria</option>
           <option value="Azerbaijan">Azerbaijan</option>
-          <!-- Add more countries as needed -->
         </select>
       </div>
 
       <!-- Time duration slider for domain purchase -->
-      <div class="mb-3">
+      <div class="mb-3 slider-container">
         <label for="duration" class="form-label">Kestus (aastates):</label>
         <input type="range" class="form-range" id="duration" min="1" max="10" step="1" value="1">
         <output id="durationOutput" class="form-text">1 aasta</output>
+      </div>
+
+      <!-- Price breakdown for domain -->
+      <div id="priceBreakdown" class="price-breakdown" style="display: none;">
+        <span id="pricePerYear"></span>
       </div>
 
       <div class="d-flex justify-content-between">
@@ -194,6 +213,7 @@
       <div class="summary bg-light p-4 rounded mb-4 text-center">
         <h3>Tellimus</h3>
         <p><strong>Doomen:</strong> <span id="selectedDomain"></span></p>
+        <p><strong>Email:</strong> <span id="selectedEmail"></span></p>
         <p><strong>Hind:</strong> <span id="price"></span></p>
         <p><strong>Kestus:</strong> <span id="selectedDuration"></span></p>
       </div>
@@ -244,53 +264,59 @@
       });
     }
 
-    // Show domain availability message
+    // Function to check domain availability
     function checkDomain() {
-      // Display the availability message
-      document.getElementById('domain-status').style.display = 'inline-block';
-    }
-
-    // Toggle visibility of the 'Muu' company field
-    function toggleOtherCompanyField() {
-      const companyType = document.getElementById('companyType').value;
-      const otherCompanyField = document.getElementById('otherCompanyField');
-      const companyNameField = document.getElementById('companyNameField');
-
-      if (companyType === 'Other') {
-        otherCompanyField.style.display = 'block';
-        companyNameField.style.display = 'none';
-      } else if (companyType === 'Company') {
-        companyNameField.style.display = 'block';
-        otherCompanyField.style.display = 'none';
-      } else {
-        otherCompanyField.style.display = 'none';
-        companyNameField.style.display = 'none';
+      const domainInput = document.getElementById('domain').value;
+      const domainStatus = document.getElementById('domain-status');
+      if (domainInput) {
+        domainStatus.style.display = 'block'; // Always show 'Saadaval'
       }
     }
 
-    // Update the duration output when the range slider is changed
-    document.getElementById('duration').addEventListener('input', function() {
-      document.getElementById('durationOutput').textContent = this.value + ' aastat';
+    // Function to toggle other company field visibility
+    function toggleOtherCompanyField() {
+      const companyType = document.getElementById('companyType').value;
+      if (companyType === 'Other') {
+        document.getElementById('otherCompanyField').style.display = 'block';
+        document.getElementById('companyNameField').style.display = 'none';
+      } else if (companyType === 'Company') {
+        document.getElementById('companyNameField').style.display = 'block';
+        document.getElementById('otherCompanyField').style.display = 'none';
+      } else {
+        document.getElementById('otherCompanyField').style.display = 'none';
+        document.getElementById('companyNameField').style.display = 'none';
+      }
+    }
+
+    // Update price breakdown based on slider value
+    const durationSlider = document.getElementById('duration');
+    const durationOutput = document.getElementById('durationOutput');
+    const priceBreakdown = document.getElementById('priceBreakdown');
+    const pricePerYear = document.getElementById('pricePerYear');
+
+    durationSlider.addEventListener('input', function() {
+      durationOutput.textContent = `${durationSlider.value} aastat`;
+      const price = (parseFloat(durationSlider.value) * 20).toFixed(2); // Update price calculation
+      pricePerYear.textContent = `Koguhind: ${price} EUR`;
+      priceBreakdown.style.display = 'block'; // Show price breakdown box
     });
 
-    // Function to finish the order and show confirmation
+    // Finalize the order and display summary
     function finishOrder() {
-      // Get the values from the form
-      const domain = document.getElementById('domain').value;
-      const duration = document.getElementById('duration').value;
-      const price = (Math.random() * 19 + 1).toFixed(2); // Random price between 1 and 20
+      const selectedDomain = document.getElementById('domain').value;
+      const selectedEmail = document.getElementById('email').value;
+      const selectedDuration = durationSlider.value + " aastat";
+      const totalPrice = (parseFloat(durationSlider.value) * 20).toFixed(2);
 
-      // Display the final confirmation details
-      document.getElementById('selectedDomain').textContent = domain + ".ee"; // Append .ee
-      document.getElementById('selectedDuration').textContent = duration + ' aastat';
-      document.getElementById('price').textContent = price + ' €';
+      // Show order summary
+      document.getElementById('selectedDomain').textContent = selectedDomain;
+      document.getElementById('selectedEmail').textContent = selectedEmail;
+      document.getElementById('selectedDuration').textContent = selectedDuration;
+      document.getElementById('price').textContent = totalPrice + " EUR";
 
-      // Show the confirmation modal and keep it open
-      var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'), {
-        backdrop: 'static',
-        keyboard: false
-      });
-      myModal.show();
+      // Show confirmation modal
+      const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+      confirmationModal.show();
     }
   </script>
 </body>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>domenivalimine.com</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Custom styling for the progress bar */
+    .progress {
+      height: 70px; /* Make the progress bar thicker */
+      margin-top: 20px;
+    }
+    .progress-bar {
+      height: 70px; /* Ensure the progress bar text fits */
+      font-size: 24px; /* Increase font size */
+      line-height: 70px; /* Vertically center the text */
+      text-align: center; /* Center the text horizontally */
+      width: 33.33%; /* Set equal width for each section (3 steps) */
+      background-color: #ddd; /* Default light gray color */
+    }
+
+    /* Highlight the active step with glowing gray */
+    .active-step {
+      background-color: #b0b0b0; /* Glowing gray effect */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      font-weight: bold;
+    }
+
+    /* Custom styling for 'domenivaalimine.com' in the header */
+    .header-text {
+      color: white; /* Make the text white */
+      font-weight: 600; /* Bold the text */
+    }
+
+    /* Custom styling for header */
+    header {
+      background-color: #007bff; /* Primary blue color */
+      color: white;
+    }
+
+    /* Custom styling for the modal */
+    .modal-content {
+      padding: 30px;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    .modal-header {
+      background-color: #28a745;
+      color: white;
+    }
+
+    /* Custom modal behavior - Keep it open */
+    .modal-backdrop {
+      z-index: 1050 !important;
+    }
+
+    .modal.show {
+      display: block !important;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* Custom styling for the modal body */
+    .modal-body {
+      font-size: 20px;
+      color: #333;
+    }
+
+    /* Custom input box styling for domain input */
+    .domain-input-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .domain-input-container .form-control {
+      width: 80%;
+    }
+
+    .domain-status {
+      color: green;
+      font-weight: bold;
+    }
+
+    /* Center the modal content in the screen */
+    .modal-dialog {
+      max-width: 600px;
+      margin: 100px auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="bg-primary text-white shadow-sm d-flex justify-content-between align-items-center py-3 w-100">
+    <h1 class="fs-4 fw-bold mb-0">domenivalimine.com</h1>
+    <p class="mb-0 header-text">domenivaalimine.com</p> <!-- White colored text in the header -->
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="progress w-75 mx-auto">
+    <div class="progress-bar" role="progressbar" aria-valuenow="33.33" aria-valuemin="0" aria-valuemax="100" id="step-1">
+      1. Vali Doomen
+    </div>
+    <div class="progress-bar" role="progressbar" aria-valuenow="66.66" aria-valuemin="0" aria-valuemax="100" id="step-2">
+      2. Sisesta andmed
+    </div>
+    <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" id="step-3">
+      3. Maksa ja kasuta
+    </div>
+  </div>
+
+  <!-- Form Container -->
+  <div class="container mt-5">
+    <!-- Step 1: Vali Doomen -->
+    <div class="step-content active" id="step-1-content">
+      <div class="mb-3">
+        <p>Doomenipoest saab osta <strong>.ee</strong>, <strong>.de</strong>, <strong>.eu</strong>, <strong>.ef</strong>, <strong>.se</strong> domeene.</p>
+      </div>
+      <div class="domain-input-container mb-3">
+        <input type="text" id="domain" class="form-control" placeholder="Sisesta domeeni nimi" />
+        <button class="btn btn-success" id="checkAvailability" onclick="checkDomain()">Kontrolli saadavust</button>
+      </div>
+      <div id="domain-status" class="domain-status" style="display: none;">Saadaval</div>
+      <p class="text-muted">Domeeni nimi ei tohi sisaldada numbreid ja peab olema ainult ingliskeelsed tähed.</p>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-primary" onclick="goToStep(2)">Jätka</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Sisesta Andmed -->
+    <div class="step-content" id="step-2-content" style="display: none;">
+      <div class="mb-3">
+        <label for="fullName" class="form-label">Täisnimi:</label>
+        <input type="text" id="fullName" class="form-control" placeholder="Täisnimi" />
+      </div>
+      <div class="mb-3">
+        <label for="companyType" class="form-label">Milline ettevõte:</label>
+        <select id="companyType" class="form-select" onchange="toggleOtherCompanyField()">
+          <option value="Individual">Erakliendina</option>
+          <option value="Company">Ettevõtte nimi</option>
+          <option value="Other">Muu</option>
+        </select>
+      </div>
+      <!-- Input field for 'Muu' option -->
+      <div id="otherCompanyField" class="mb-3" style="display: none;">
+        <label for="otherCompany" class="form-label">Muu ettevõtte nimi:</label>
+        <input type="text" id="otherCompany" class="form-control" placeholder="Sisesta muu ettevõtte nimi" />
+      </div>
+      <!-- Input field for 'Ettevõtte nimi' option -->
+      <div id="companyNameField" class="mb-3" style="display: none;">
+        <label for="companyName" class="form-label">Ettevõtte nimi:</label>
+        <input type="text" id="companyName" class="form-control" placeholder="Sisesta ettevõtte nimi" />
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" id="email" class="form-control" placeholder="Email" />
+      </div>
+      <div class="mb-3">
+        <label for="branch" class="form-label">Asukoht (Country):</label>
+        <select id="branch" class="form-select">
+          <!-- List of popular countries in alphabetical order -->
+          <option value="Afghanistan">Afghanistan</option>
+          <option value="Albania">Albania</option>
+          <option value="Algeria">Algeria</option>
+          <option value="Andorra">Andorra</option>
+          <option value="Angola">Angola</option>
+          <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+          <option value="Argentina">Argentina</option>
+          <option value="Armenia">Armenia</option>
+          <option value="Australia">Australia</option>
+          <option value="Austria">Austria</option>
+          <option value="Azerbaijan">Azerbaijan</option>
+          <!-- Add more countries as needed -->
+        </select>
+      </div>
+
+      <!-- Time duration slider for domain purchase -->
+      <div class="mb-3">
+        <label for="duration" class="form-label">Kestus (aastates):</label>
+        <input type="range" class="form-range" id="duration" min="1" max="10" step="1" value="1">
+        <output id="durationOutput" class="form-text">1 aasta</output>
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-secondary" onclick="goToStep(1)">Tagasi</button>
+        <button class="btn btn-primary" onclick="goToStep(3)">Jätka</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Maksa ja Kasuta -->
+    <div class="step-content" id="step-3-content" style="display: none;">
+      <div class="summary bg-light p-4 rounded mb-4 text-center">
+        <h3>Tellimus</h3>
+        <p><strong>Doomen:</strong> <span id="selectedDomain"></span></p>
+        <p><strong>Hind:</strong> <span id="price"></span></p>
+        <p><strong>Kestus:</strong> <span id="selectedDuration"></span></p>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-secondary" onclick="goToStep(2)">Tagasi</button>
+        <button class="btn btn-success" onclick="finishOrder()">Kinnita Tellimus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Modal for Confirmation -->
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalLabel">Tellimus kinnitatud!</h5>
+        </div>
+        <div class="modal-body">
+          <p>Teie tellimus on edukalt kinnitatud. Aitäh!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Function to navigate between steps
+    function goToStep(step) {
+      // Hide all steps
+      const steps = document.querySelectorAll('.step-content');
+      steps.forEach(function(stepContent) {
+        stepContent.style.display = 'none';
+      });
+      
+      // Show the selected step
+      document.getElementById('step-' + step + '-content').style.display = 'block';
+
+      // Update progress bar (optional)
+      const progressBars = document.querySelectorAll('.progress-bar');
+      progressBars.forEach(function(bar, index) {
+        if (index < step - 1) {
+          bar.classList.add('active-step');
+        } else {
+          bar.classList.remove('active-step');
+        }
+      });
+    }
+
+    // Show domain availability message
+    function checkDomain() {
+      // Display the availability message
+      document.getElementById('domain-status').style.display = 'inline-block';
+    }
+
+    // Toggle visibility of the 'Muu' company field
+    function toggleOtherCompanyField() {
+      const companyType = document.getElementById('companyType').value;
+      const otherCompanyField = document.getElementById('otherCompanyField');
+      const companyNameField = document.getElementById('companyNameField');
+
+      if (companyType === 'Other') {
+        otherCompanyField.style.display = 'block';
+        companyNameField.style.display = 'none';
+      } else if (companyType === 'Company') {
+        companyNameField.style.display = 'block';
+        otherCompanyField.style.display = 'none';
+      } else {
+        otherCompanyField.style.display = 'none';
+        companyNameField.style.display = 'none';
+      }
+    }
+
+    // Update the duration output when the range slider is changed
+    document.getElementById('duration').addEventListener('input', function() {
+      document.getElementById('durationOutput').textContent = this.value + ' aastat';
+    });
+
+    // Function to finish the order and show confirmation
+    function finishOrder() {
+      // Get the values from the form
+      const domain = document.getElementById('domain').value;
+      const duration = document.getElementById('duration').value;
+      const price = (Math.random() * 19 + 1).toFixed(2); // Random price between 1 and 20
+
+      // Display the final confirmation details
+      document.getElementById('selectedDomain').textContent = domain + ".ee"; // Append .ee
+      document.getElementById('selectedDuration').textContent = duration + ' aastat';
+      document.getElementById('price').textContent = price + ' €';
+
+      // Show the confirmation modal and keep it open
+      var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'), {
+        backdrop: 'static',
+        keyboard: false
+      });
+      myModal.show();
+    }
+  </script>
+</body>
+</html>

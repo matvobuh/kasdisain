@@ -3,27 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maja SVG</title>
+    <title>Maja Laskmine Kosmoses</title>
+    <style>
+        /* Basic body and background setup */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: black; /* Space background */
+        }
+
+        /* Galactic background */
+        .space-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.nasa.gov/sites/default/files/thumbnails/iss063e120119.jpg?itok=StwO3Ctv') no-repeat center center;
+            background-size: cover;
+            z-index: -2;
+            animation: move-background 120s linear infinite;
+        }
+
+        /* Stars */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent url('https://cdn.pixabay.com/photo/2014/10/10/19/10/space-484626_960_720.jpg') repeat;
+            z-index: -1;
+            opacity: 0.7;
+            animation: move-stars 30s linear infinite;
+        }
+
+        /* Planet setup */
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.8); /* Adds depth and glow */
+            animation: move-planets 120s infinite linear;
+        }
+
+        /* Close planets (larger, more detailed) */
+        .planet1 {
+            width: 120px;
+            height: 120px;
+            top: 10%;
+            left: 25%;
+            background: radial-gradient(circle, rgba(0, 128, 0, 0.7) 40%, rgba(0, 64, 0, 1) 100%); /* Green planet */
+            animation-duration: 120s;
+        }
+
+        .planet2 {
+            width: 150px;
+            height: 150px;
+            top: 20%;
+            left: 60%;
+            background: radial-gradient(circle, rgba(255, 255, 0, 0.7) 40%, rgba(204, 204, 0, 1) 100%); /* Yellow planet */
+            animation-duration: 150s;
+        }
+
+        .planet3 {
+            width: 100px;
+            height: 100px;
+            top: 60%;
+            left: 35%;
+            background: radial-gradient(circle, rgba(0, 0, 255, 0.7) 40%, rgba(0, 0, 139, 1) 100%); /* Blue planet */
+            animation-duration: 180s;
+        }
+
+        /* Distant smaller planets */
+        .planet4 {
+            width: 60px;
+            height: 60px;
+            top: 5%;
+            left: 80%;
+            background: radial-gradient(circle, rgba(255, 69, 0, 0.7) 40%, rgba(139, 0, 0, 1) 100%); /* Red planet */
+            opacity: 0.8;
+            animation-duration: 200s;
+        }
+
+        .planet5 {
+            width: 40px;
+            height: 40px;
+            top: 80%;
+            left: 10%;
+            background: radial-gradient(circle, rgba(192, 192, 192, 0.7) 40%, rgba(169, 169, 169, 1) 100%); /* Gray planet */
+            opacity: 0.5;
+            animation-duration: 220s;
+        }
+
+        /* Floating house container */
+        .house-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: center;
+            animation: move-house 60s infinite linear;
+        }
+
+        /* Floating house style */
+        svg {
+            width: 200px;
+            height: 200px;
+            transform-origin: center;
+            animation: float 60s infinite ease-in-out;
+        }
+
+        @keyframes move-house {
+            0% {
+                transform: translate(-100%, -50%);
+            }
+            50% {
+                transform: translate(100%, -50%);
+            }
+            100% {
+                transform: translate(-100%, -50%);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            100% {
+                transform: translate(0, -50px) rotate(360deg);
+            }
+        }
+
+        /* Stars twinkle effect */
+        @keyframes twinkle {
+            0% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 0.2;
+            }
+        }
+
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite alternate;
+        }
+    </style>
 </head>
 <body>
-    <svg width="170" height="170" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <!-- Korsten -->
-        <rect x="60" y="2" width="20" height="80" fill="#7D7D94" />
+    <!-- Space Background with Stars -->
+    <div class="space-background"></div>
+    <div class="stars"></div>
 
-        <!-- Katus -->
-        <polygon points="30,80 100,-5 170,80" fill="#4A5060" />
+    <!-- Planets -->
+    <div class="planet planet1"></div>
+    <div class="planet planet2"></div>
+    <div class="planet planet3"></div>
+    <div class="planet planet4"></div>
+    <div class="planet planet5"></div>
 
-        <!-- Seinad -->
-        <rect x="45" y="80" width="110" height="90" fill="#A12020" />
+    <!-- House container -->
+    <div class="house-container">
+        <svg id="house" width="170" height="170" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- Korsten -->
+            <rect x="60" y="2" width="20" height="80" fill="#7D7D94" />
 
-        <!-- Aken -->
-        <rect x="60" y="100" width="30" height="40" fill="#2E2E2E" stroke="white" stroke-width="3" />
+            <!-- Katus -->
+            <polygon points="30,80 100,-5 170,80" fill="#4A5060" />
 
-        <!-- Uks -->
-        <rect x="110" y="100" width="33" height="71" fill="#7D7D94" stroke="white" stroke-width="3" />
+            <!-- Seinad -->
+            <rect x="45" y="80" width="110" height="90" fill="#A12020" />
 
-        <!-- Uksenupp -->
-        <circle cx="137" cy="135" r="3" fill="black" />
-    </svg>
+            <!-- Aken -->
+            <rect x="60" y="100" width="30" height="40" fill="#2E2E2E" stroke="white" stroke-width="3" />
+
+            <!-- Uks -->
+            <rect x="110" y="100" width="33" height="71" fill="#7D7D94" stroke="white" stroke-width="3" />
+
+            <!-- Uksenupp -->
+            <circle cx="137" cy="135" r="3" fill="black" />
+        </svg>
+    </div>
+
+    <script>
+        // Create random stars with twinkling effect
+        function createStars(num) {
+            for (let i = 0; i < num; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                document.body.appendChild(star);
+            }
+        }
+
+        createStars(200); // Create 200 stars
+    </script>
 </body>
 </html>

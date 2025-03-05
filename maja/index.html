@@ -43,7 +43,7 @@
             animation: move-stars 30s linear infinite;
         }
 
-        /* Planet setup */
+        /* Planets */
         .planet {
             position: absolute;
             border-radius: 50%;
@@ -51,7 +51,6 @@
             animation: move-planets 120s infinite linear;
         }
 
-        /* Close planets (larger, more detailed) */
         .planet1 {
             width: 120px;
             height: 120px;
@@ -79,7 +78,6 @@
             animation-duration: 180s;
         }
 
-        /* Distant smaller planets */
         .planet4 {
             width: 60px;
             height: 60px;
@@ -159,6 +157,116 @@
             border-radius: 50%;
             animation: twinkle 1.5s infinite alternate;
         }
+
+        /* Galactic movement */
+        @keyframes move-background {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        @keyframes move-stars {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        /* Human path animation */
+        .human-container {
+            position: absolute;
+            top: 30%;
+            left: 10%;
+            animation: move-human 30s infinite linear;
+            transform-origin: center;
+        }
+
+        /* Detailed Space Suit Stickman */
+        .human {
+            position: relative;
+            width: 20px;
+            height: 50px;
+        }
+
+        /* Human head (Helmet) */
+        .head {
+            position: absolute;
+            top: 0;
+            left: 5px;
+            width: 10px;
+            height: 10px;
+            background: #D0D0D0; /* Light gray for the helmet */
+            border-radius: 50%;
+            border: 2px solid #7A7A7A; /* Darker gray outline */
+        }
+
+        /* Human body (Space suit torso) */
+        .body {
+            position: absolute;
+            top: 15px;
+            left: 5px;
+            width: 10px;
+            height: 25px;
+            background: white; /* White color for space suit */
+            border-radius: 2px;
+            border: 2px solid #7A7A7A;
+        }
+
+        /* Human arms (Space suit) */
+        .arm-left, .arm-right {
+            position: absolute;
+            width: 5px;
+            height: 15px;
+            background: white; /* White color for space suit */
+            border-radius: 2px;
+            border: 2px solid #7A7A7A;
+        }
+
+        .arm-left {
+            top: 20px;
+            left: -6px;
+        }
+
+        .arm-right {
+            top: 20px;
+            left: 21px;
+        }
+
+        /* Human legs (Space suit) */
+        .leg-left, .leg-right {
+            position: absolute;
+            width: 5px;
+            height: 15px;
+            background: white; /* White color for space suit */
+            border-radius: 2px;
+            border: 2px solid #7A7A7A;
+        }
+
+        .leg-left {
+            top: 40px;
+            left: 1px;
+        }
+
+        .leg-right {
+            top: 40px;
+            left: 14px;
+        }
+
+        /* Human follows the path animation */
+        @keyframes move-human {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            100% {
+                transform: translate(500px, 500px) rotate(360deg);
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -180,7 +288,7 @@
             <rect x="60" y="2" width="20" height="80" fill="#7D7D94" />
 
             <!-- Katus -->
-            <polygon points="30,80 100,-5 170,80" fill="#4A5060" />
+            <polygon points="30,80 100,0 170,80" fill="#4A5060" />
 
             <!-- Seinad -->
             <rect x="45" y="80" width="110" height="90" fill="#A12020" />
@@ -189,11 +297,23 @@
             <rect x="60" y="100" width="30" height="40" fill="#2E2E2E" stroke="white" stroke-width="3" />
 
             <!-- Uks -->
-            <rect x="110" y="100" width="33" height="71" fill="#7D7D94" stroke="white" stroke-width="3" />
+            <rect x="110" y="100" width="33" height="68" fill="#7D7D94" stroke="white" stroke-width="3" />
 
             <!-- Uksenupp -->
             <circle cx="137" cy="135" r="3" fill="black" />
         </svg>
+    </div>
+
+    <!-- Floating Human Container -->
+    <div class="human-container">
+        <div class="human">
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="arm-left"></div>
+            <div class="arm-right"></div>
+            <div class="leg-left"></div>
+            <div class="leg-right"></div>
+        </div>
     </div>
 
     <script>
